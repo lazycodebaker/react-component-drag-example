@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
+
+    <title>Element Drag</title>
+</head>
+
+<style>
+
+    body{
+        background-image: url("https://images.pexels.com/photos/1428169/pexels-photo-1428169.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .drag_element{
+        background: rgba(255,255,255,0.5);
+        backdrop-filter: blur(12px);
+        width: 220px;
+        height: 120px;
+    }
+</style>
+<body>
+    
+    <div id="drag_element" class="drag_element font-bold text-xl rounded select-none flex items-center justify-center cursor-pointer absolute bg-red-400">
+        Drag Me 
+    </div>
+
+    <div id="drag_element" class="drag_element font-bold text-xl rounded select-none flex items-center justify-center cursor-pointer absolute bg-red-400">
+        Drag Me 
+    </div>
+
+    <div id="drag_element" class="drag_element font-bold text-xl rounded select-none flex items-center justify-center cursor-pointer absolute bg-red-400">
+        Drag Me 
+    </div>
+
+    
+</body>
+
+<script>
+
+    var dragElements = document.querySelectorAll('.drag_element');
+
+    dragElements.forEach(function(element){
+        // set random position for each element betweeen the screen
+        element.style.top = Math.floor(Math.random() * (window.innerHeight - element.offsetHeight)) + 'px';
+    });
+
+    dragElements.forEach(function(dragElement){
+
+        dragElement.addEventListener('mousedown', function(e) {
+        var posX = e.clientX - dragElement.offsetLeft;
+        var posY = e.clientY - dragElement.offsetTop;
+
+        dragElement.style.zIndex = 1000;
+        document.body.append(dragElement);
+
+        function moveAt(e) {
+            dragElement.style.left = e.pageX - posX + 'px';
+            dragElement.style.top = e.pageY - posY + 'px';
+        };
+
+        function onMouseMove(e) {
+            moveAt(e);
+        };
+
+        document.addEventListener('mousemove', onMouseMove);
+
+        dragElement.onmouseup = function() {
+            document.removeEventListener('mousemove', onMouseMove);
+            dragElement.onmouseup = null;
+        };
+    });
+
+
+    });
+
+
+</script>
+
+</html>

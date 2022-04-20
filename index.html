@@ -73,10 +73,35 @@
         document.addEventListener('mousemove', onMouseMove);
 
         dragElement.onmouseup = function() {
-            document.removeEventListener('mousemove', onMouseMove);
-            dragElement.onmouseup = null;
-        };
-    });
+                document.removeEventListener('mousemove', onMouseMove);
+                dragElement.onmouseup = null;
+            };
+        });
+
+        dragElement.addEventListener,("touchmove", function(e) {
+            var posX = e.touches[0].clientX - dragElement.offsetLeft;
+            var posY = e.touches[0].clientY - dragElement.offsetTop;
+
+            dragElement.style.zIndex = 1000;
+            document.body.append(dragElement);
+
+            function moveAt(e) {
+                dragElement.style.left = e.touches[0].pageX - posX + 'px';
+                dragElement.style.top = e.touches[0].pageY - posY + 'px';
+            };
+
+            function onTouchMove(e) {
+                moveAt(e);
+            };
+
+            document.addEventListener('touchmove', onTouchMove);
+
+            dragElement.ontouchend = function() {
+                document.removeEventListener('touchmove', onTouchMove);
+                dragElement.ontouchend = null;
+            };
+        });
+
 
 
     });
